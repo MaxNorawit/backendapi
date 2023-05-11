@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const db = mysql.createConnection(process.env.DATABASE_URL);
+const db = mysql.createConnection(process.env.DATABASE_URL)
  
 
 app.get("/app/product", (req, res) => {
