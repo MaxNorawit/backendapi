@@ -12,7 +12,14 @@ app.use(cors());
 app.use(express.json());
 
 
-const db = mysql.createConnection(process.env.DATABASE_URL)
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "maxnorawit"
+// })
+
+const db = mysql.createConnection(process.env.DATABASE_URL);
  
 
 app.get("/app/product", (req, res) => {
@@ -29,12 +36,15 @@ app.get("/me", async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     var decoded = jwt.verify(token, secrat);
-    const test = db.query(
-      "SELECT id,username,email,point,rank FROM users WHERE username = ?",
+    db.query(
+      "SELECT * FROM users WHERE username = ?",
       decoded.username,
-      (err, result) => {
-        //console.log(result);
-        return res.json({ status: "success", message: result[0] });
+      (err, result) => {  
+        if (err) {
+          console.log(err);
+        } else {
+          res.json({ status: "success", message: result[0] });
+        }
       }
     );
   } catch (err) {
@@ -263,7 +273,7 @@ app.post("/addproduct", async (req, res) => {
     const token = req.headers.authorization.split(" ")[1];
     var decoded = jwt.verify(token, secrat);
     db.query(
-      "SELECT rank FROM users WHERE username = ?",
+      "SELECT * FROM users WHERE username = ?",
       decoded.username,
       (err, result) => {
         if(result[0].rank === 1){
