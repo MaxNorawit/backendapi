@@ -169,8 +169,8 @@ app.post("/register", async (req, res) => {
           if (result.length == 0) {
             bcrypt.hash(password, saltRounds, function (err, hash) {
               db.query(
-                "INSERT INTO users (username, password, email) VALUES (?,?,?)",
-                [username, hash, email],
+                "INSERT INTO users (username, password, email, rank) VALUES (?,?,?,?)",
+                [username, hash, email, 0],
                 (err, result) => {
                   if (err) {
                     return res
