@@ -132,6 +132,20 @@ app.get("/buy/:id", async (req, res) => {
   });
 });
 
+app.get("/delet/:id", async (req, res) => {
+  const id = req.params.id;
+  db.query("DELETE FROM product WHERE id = ?", id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      return res.status(200).json({
+        status: "success",
+        message: "ลบสินค้า",
+      });      
+    }
+  });
+});
+
 app.post("/register", async (req, res) => {
   const username = req.body.user;
   const password = req.body.password;
